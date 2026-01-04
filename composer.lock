@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67c4ab4e12d82588f40a191f388dce39",
+    "content-hash": "7e389f112bb6c19339940f7562f6b06a",
     "packages": [
         {
             "name": "chamber-orchestra/metadata-bundle",
