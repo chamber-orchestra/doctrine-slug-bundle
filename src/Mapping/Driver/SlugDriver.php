@@ -76,7 +76,7 @@ class SlugDriver extends AbstractMappingDriver
         $extensionMetadata->addConfiguration($config);
     }
 
-    protected function getPropertyAnnotation(): string|null
+    protected function getPropertyAttribute(): string|null
     {
         return Slug::class;
     }
