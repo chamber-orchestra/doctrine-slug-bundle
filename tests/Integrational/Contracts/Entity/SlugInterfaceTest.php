@@ -30,7 +30,9 @@ final class SlugInterfaceTest extends KernelTestCase
 
 final class SlugInterfaceEntity implements SlugInterface
 {
-    public function __construct(private string $name, private string $slug) {}
+    public function __construct(private string $name, private string $slug)
+    {
+    }
 
     public function getName(): string
     {

@@ -17,7 +17,8 @@ readonly class StringGenerator implements GeneratorInterface
 {
     public function __construct(
         private SluggerInterface $slugger,
-    ) {}
+    ) {
+    }
 
     public function generate(string $base, string $delimiter = '-', ?int $length = null): string
     {
@@ -28,6 +29,6 @@ readonly class StringGenerator implements GeneratorInterface
             $string = $string->truncate($length);
         }
 
-        return (string)$string;
+        return (string) $string;
     }
 }

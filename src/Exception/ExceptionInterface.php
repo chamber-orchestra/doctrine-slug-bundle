@@ -11,4 +11,6 @@ declare(strict_types=1);
 
 namespace ChamberOrchestra\DoctrineSlugBundle\Exception;
 
-interface ExceptionInterface {}
+interface ExceptionInterface
+{
+}

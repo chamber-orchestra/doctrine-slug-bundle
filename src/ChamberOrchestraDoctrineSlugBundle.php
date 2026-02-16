@@ -13,4 +13,6 @@ namespace ChamberOrchestra\DoctrineSlugBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class ChamberOrchestraDoctrineSlugBundle extends Bundle {}
+final class ChamberOrchestraDoctrineSlugBundle extends Bundle
+{
+}
