@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the ChamberOrchestra package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tests\Unit\Mapping\Driver;
 
 use ChamberOrchestra\DoctrineSlugBundle\Exception\MappingException;
@@ -71,6 +78,42 @@ final class SlugDriverTest extends TestCase
         $driver->loadMetadataForClass($extension);
     }
 
+    public function testItRejectsEmptySeparator(): void
+    {
+        $metadata = $this->createMetadata(SlugDriverEmptySeparatorEntity::class);
+        $extension = new ExtensionMetadata($metadata);
+        $driver = new SlugDriver(new AttributeReader());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "separator" option of #[Slug] must be exactly one character');
+
+        $driver->loadMetadataForClass($extension);
+    }
+
+    public function testItRejectsMultiCharSeparator(): void
+    {
+        $metadata = $this->createMetadata(SlugDriverMultiCharSeparatorEntity::class);
+        $extension = new ExtensionMetadata($metadata);
+        $driver = new SlugDriver(new AttributeReader());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "separator" option of #[Slug] must be exactly one character, got "--".');
+
+        $driver->loadMetadataForClass($extension);
+    }
+
+    public function testItRejectsNonStringSourceType(): void
+    {
+        $metadata = $this->createMetadata(SlugDriverIntegerSourceEntity::class);
+        $extension = new ExtensionMetadata($metadata);
+        $driver = new SlugDriver(new AttributeReader());
+
+        $this->expectException(MappingException::class);
+        $this->expectExceptionMessage('Source property "name" of class "Tests\\Unit\\Mapping\\Driver\\SlugDriverIntegerSourceEntity" used by sluggable property "slug" must be a string type, got "integer".');
+
+        $driver->loadMetadataForClass($extension);
+    }
+
     private function createMetadata(string $className): ClassMetadata
     {
         $metadata = new ClassMetadata($className);
@@ -115,4 +158,34 @@ final class SlugDriverNullableSourceEntity
 
     #[Column(type: 'string', length: 255, nullable: true)]
     public ?string $name = null;
+}
+
+final class SlugDriverEmptySeparatorEntity
+{
+    #[Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Slug(source: 'name', separator: '')]
+    public string $slug = '';
+
+    #[Column(type: 'string', length: 255, nullable: false)]
+    public string $name = '';
+}
+
+final class SlugDriverMultiCharSeparatorEntity
+{
+    #[Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Slug(source: 'name', separator: '--')]
+    public string $slug = '';
+
+    #[Column(type: 'string', length: 255, nullable: false)]
+    public string $name = '';
+}
+
+final class SlugDriverIntegerSourceEntity
+{
+    #[Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Slug(source: 'name')]
+    public string $slug = '';
+
+    #[Column(type: 'integer', nullable: false)]
+    public int $name = 0;
 }

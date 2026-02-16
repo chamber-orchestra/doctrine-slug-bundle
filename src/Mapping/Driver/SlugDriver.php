@@ -29,7 +29,7 @@ class SlugDriver extends AbstractMappingDriver
 
         $config = new SlugConfiguration();
         foreach ($class->getProperties() as $property) {
-            /** @var Slug $attr */
+            /** @var Slug|null $attr */
             $attr = $this->reader->getPropertyAttribute($property, Slug::class);
             if (null === $attr) {
                 continue;
@@ -39,10 +39,10 @@ class SlugDriver extends AbstractMappingDriver
                 throw MappingException::missingProperty($className, $attr->source, $property->getName());
             }
 
-            /** @var Column $column */
+            /** @var Column|null $column */
             $column = $this->reader->getPropertyAttribute($property, Column::class);
             if (null === $column) {
-                throw MappingException::missingAnnotation($className, $property->getName(), Column::class);
+                throw MappingException::missingAttribute($className, $property->getName(), Column::class);
             }
 
             if (!$column->unique) {
@@ -52,8 +52,15 @@ class SlugDriver extends AbstractMappingDriver
             $sourceProperty = $class->getProperty($attr->source);
             /** @var Column|null $sourceColumn */
             $sourceColumn = $this->reader->getPropertyAttribute($sourceProperty, Column::class);
-            if (null !== $sourceColumn && $sourceColumn->nullable && !$column->nullable) {
-                throw MappingException::notNullableWithSourceNullable($className, $attr->source, $property->getName());
+
+            if (null !== $sourceColumn) {
+                if (!\in_array($sourceColumn->type, ['string', 'text', 'ascii_string'], true)) {
+                    throw MappingException::invalidSourceType($className, $attr->source, $property->getName(), $sourceColumn->type);
+                }
+
+                if ($sourceColumn->nullable && !$column->nullable) {
+                    throw MappingException::notNullableWithSourceNullable($className, $attr->source, $property->getName());
+                }
             }
 
             $config->mapField($property->getName(), [

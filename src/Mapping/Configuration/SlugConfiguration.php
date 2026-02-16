@@ -15,6 +15,9 @@ use ChamberOrchestra\MetadataBundle\Mapping\ORM\AbstractMetadataConfiguration;
 
 class SlugConfiguration extends AbstractMetadataConfiguration
 {
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getSluggableFields(): array
     {
         return \array_filter($this->mappings, function (array $item): bool {

@@ -1,8 +1,30 @@
 [![PHP Composer](https://github.com/chamber-orchestra/doctrine-slug-bundle/actions/workflows/php.yml/badge.svg)](https://github.com/chamber-orchestra/doctrine-slug-bundle/actions/workflows/php.yml)
+[![codecov](https://codecov.io/gh/chamber-orchestra/doctrine-slug-bundle/graph/badge.svg)](https://codecov.io/gh/chamber-orchestra/doctrine-slug-bundle)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%206-brightgreen)](https://phpstan.org/)
+[![Latest Stable Version](https://poser.pugx.org/chamber-orchestra/doctrine-slug-bundle/v)](https://packagist.org/packages/chamber-orchestra/doctrine-slug-bundle)
+[![License](https://poser.pugx.org/chamber-orchestra/doctrine-slug-bundle/license)](https://packagist.org/packages/chamber-orchestra/doctrine-slug-bundle)
+![Symfony 8](https://img.shields.io/badge/Symfony-8-purple?logo=symfony)
 
 # Doctrine Slug Bundle
 
-Symfony bundle that generates unique, URL-friendly slugs for Doctrine ORM entities using PHP 8 attributes. It integrates with Chamber Orchestra metadata and Doctrine listeners to keep slugs consistent on persist and (optionally) on update.
+A Symfony bundle that automatically generates unique, URL-friendly slugs for Doctrine ORM entities using native PHP 8 attributes. Slugs are created on persist and optionally regenerated on update, with built-in collision resolution (`hello-world`, `hello-world-1`, `hello-world-2`, ...).
+
+## Features
+
+- Declarative configuration via `#[Slug]` PHP attribute
+- Automatic unique slug generation with collision suffixes
+- Optional slug regeneration on entity update
+- Configurable separator character and column length
+- Reusable `SlugTrait` for common name/slug entity patterns
+- Mapping validation (unique constraint, nullable consistency, source type checking)
+- Integration with `chamber-orchestra/metadata-bundle` and Doctrine event listeners
+
+## Requirements
+
+- PHP 8.5+
+- Symfony 8.0+
+- Doctrine ORM 3.6+ / DoctrineBundle 3.2+
+- `chamber-orchestra/metadata-bundle` 8.0.*
 
 ## Installation
 
@@ -19,19 +41,9 @@ return [
 ];
 ```
 
-## Dependencies
-
-Runtime requirements are managed by Composer. The bundle depends on:
-
-- PHP 8.4+
-- `chamber-orchestra/metadata-bundle`
-- `symfony/string`
-- `symfony/translation-contracts`
-- Doctrine ORM + DoctrineBundle (for entity listeners)
-
 ## Usage
 
-Annotate a sluggable property with the `#[Slug]` attribute and ensure the slug column is unique.
+Annotate a property with the `#[Slug]` attribute. The slug column **must** be `unique`.
 
 ```php
 namespace App\Entity;
@@ -54,43 +66,59 @@ class Post
     #[Slug(source: 'name')]
     private string $slug = '';
 
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
+    // getters ...
 }
 ```
 
-Options:
+### Attribute Options
 
-- `source`: source field name for slug generation.
-- `update`: set to `true` to regenerate slug when the source changes.
-- `separator`: character used between words (default `-`).
-
-Notes:
-
-- The slug column must be `unique`.
-- If the source column is nullable and the slug column is not, mapping will throw.
+| Option | Type | Default | Description |
+|-----------|--------|---------|----------------------------------------------|
+| `source` | string | — | Source property name for slug generation |
+| `update` | bool | `false` | Regenerate slug when the source field changes |
+| `separator`| string | `-` | Word separator character |
 
 ### Using the SlugTrait
 
-You can also reuse the provided trait:
+For entities with a standard `name`/`slug` pattern:
 
 ```php
+use ChamberOrchestra\DoctrineSlugBundle\Contracts\Entity\SlugInterface;
 use ChamberOrchestra\DoctrineSlugBundle\Entity\SlugTrait;
+use Doctrine\ORM\Mapping as ORM;
 
-class Post
+#[ORM\Entity]
+class Post implements SlugInterface
 {
     use SlugTrait;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 }
 ```
 
-The trait defines `name` and `slug` fields with proper Doctrine mapping and a `#[Slug(source: 'name')]` attribute.
+The trait provides `$name` (varchar 127), `$slug` (varchar 255, unique) with `getName()`, `setName()`, and `getSlug()` accessors.
 
-## Running Tests
+### Mapping Constraints
+
+The bundle validates mappings at metadata load time:
+
+- Slug column must have `unique: true`
+- Source property must exist and be a string type (`string`, `text`, or `ascii_string`)
+- If source is nullable, slug must also be nullable
+- Separator must be exactly one character
+
+## Development
 
 ```bash
-composer test
+composer test       # Run PHPUnit test suite
+composer analyse    # Run PHPStan static analysis (level 6)
+composer cs-fix     # Fix code style with PHP-CS-Fixer
+composer cs-check   # Verify code style (dry-run)
 ```
 
-This runs PHPUnit with the configuration in `phpunit.xml.dist`.
+## License
+
+[MIT](LICENSE)
