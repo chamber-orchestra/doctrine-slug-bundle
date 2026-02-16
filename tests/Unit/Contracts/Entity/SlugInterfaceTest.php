@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the ChamberOrchestra package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tests\Unit\Contracts\Entity;
 
 use ChamberOrchestra\DoctrineSlugBundle\Contracts\Entity\SlugInterface;
@@ -15,6 +22,7 @@ final class SlugInterfaceTest extends TestCase
 
         self::assertTrue($reflection->isInterface());
         self::assertTrue($reflection->hasMethod('getName'));
+        self::assertTrue($reflection->hasMethod('setName'));
         self::assertTrue($reflection->hasMethod('getSlug'));
     }
 }

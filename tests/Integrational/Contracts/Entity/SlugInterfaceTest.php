@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the ChamberOrchestra package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tests\Integrational\Contracts\Entity;
 
 use ChamberOrchestra\DoctrineSlugBundle\Contracts\Entity\SlugInterface;
@@ -23,13 +30,16 @@ final class SlugInterfaceTest extends KernelTestCase
 
 final class SlugInterfaceEntity implements SlugInterface
 {
-    public function __construct(private string $name, private string $slug)
-    {
-    }
+    public function __construct(private string $name, private string $slug) {}
 
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     public function getSlug(): string

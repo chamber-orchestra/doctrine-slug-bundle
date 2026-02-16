@@ -24,11 +24,7 @@ return static function (ContainerConfigurator $container): void {
     $services->alias(GeneratorInterface::class, StringGenerator::class);
 
     $services->load('ChamberOrchestra\\DoctrineSlugBundle\\', __DIR__.'/../../*')
-        ->exclude(__DIR__.'/../../{DependencyInjection,Resources,ExceptionInterface,Repository}');
-
-    $services->load('ChamberOrchestra\\DoctrineSlugBundle\\EventSubscriber\\', __DIR__.'/../../EventSubscriber/')
-        ->tag('doctrine.event_subscriber');
-
+        ->exclude(__DIR__.'/../../{DependencyInjection,Resources}');
 
     $services->load('ChamberOrchestra\\DoctrineSlugBundle\\Slug\\Generator\\', __DIR__.'/../../Slug/Generator/')
         ->lazy(true);

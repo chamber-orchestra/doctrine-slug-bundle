@@ -1,15 +1,25 @@
 {
   "name": "chamber-orchestra/doctrine-slug-bundle",
-  "type": "library",
-  "description": "The symfony doctrine slug bundle",
+  "type": "symfony-bundle",
+  "description": "Symfony bundle for generating unique, URL-friendly slugs for Doctrine ORM entities using PHP 8 attributes",
   "keywords": [
     "symfony",
-    "doctrine-slug-bundle",
-    "doctrine-slug",
+    "doctrine",
     "slug",
-    "doctrine"
+    "slugify",
+    "url-friendly",
+    "seo",
+    "doctrine-orm",
+    "symfony-bundle",
+    "unique-slug",
+    "php-attributes"
   ],
+  "homepage": "https://github.com/chamber-orchestra/doctrine-slug-bundle",
   "license": "MIT",
+  "support": {
+    "issues": "https://github.com/chamber-orchestra/doctrine-slug-bundle/issues",
+    "source": "https://github.com/chamber-orchestra/doctrine-slug-bundle"
+  },
   "authors": [
     {
       "name": "Andrew Lukin",
@@ -19,13 +29,15 @@
     }
   ],
   "require": {
-    "php": "^8.4",
+    "php": "^8.5",
     "chamber-orchestra/metadata-bundle": "8.0.*",
     "symfony/string": "8.0.*",
     "symfony/translation-contracts": "^3.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^12.5",
+    "friendsofphp/php-cs-fixer": "^3.64",
+    "phpstan/phpstan": "^2.0",
+    "phpunit/phpunit": "^13.0",
     "symfony/test-pack": "^1.2"
   },
   "autoload": {
@@ -54,6 +66,9 @@
     }
   },
   "scripts": {
-    "test": "vendor/bin/phpunit"
+    "test": "vendor/bin/phpunit",
+    "analyse": "vendor/bin/phpstan analyse",
+    "cs-fix": "vendor/bin/php-cs-fixer fix",
+    "cs-check": "vendor/bin/php-cs-fixer fix --dry-run --diff"
   }
 }

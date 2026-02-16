@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the ChamberOrchestra package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tests\Unit\DependencyInjection;
 
 use ChamberOrchestra\DoctrineSlugBundle\DependencyInjection\ChamberOrchestraDoctrineSlugExtension;
@@ -27,6 +34,5 @@ final class ChamberOrchestraDoctrineSlugExtensionTest extends TestCase
             (string)$container->getAlias(GeneratorInterface::class)
         );
         self::assertTrue($container->hasDefinition(SlugSubscriber::class));
-        self::assertTrue($container->getDefinition(SlugSubscriber::class)->hasTag('doctrine.event_subscriber'));
     }
 }
