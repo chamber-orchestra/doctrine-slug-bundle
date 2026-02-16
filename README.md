@@ -1,9 +1,11 @@
 [![PHP Composer](https://github.com/chamber-orchestra/doctrine-slug-bundle/actions/workflows/php.yml/badge.svg)](https://github.com/chamber-orchestra/doctrine-slug-bundle/actions/workflows/php.yml)
 [![codecov](https://codecov.io/gh/chamber-orchestra/doctrine-slug-bundle/graph/badge.svg)](https://codecov.io/gh/chamber-orchestra/doctrine-slug-bundle)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%206-brightgreen)](https://phpstan.org/)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%20max-brightgreen)](https://phpstan.org/)
 [![Latest Stable Version](https://poser.pugx.org/chamber-orchestra/doctrine-slug-bundle/v)](https://packagist.org/packages/chamber-orchestra/doctrine-slug-bundle)
 [![License](https://poser.pugx.org/chamber-orchestra/doctrine-slug-bundle/license)](https://packagist.org/packages/chamber-orchestra/doctrine-slug-bundle)
 ![Symfony 8](https://img.shields.io/badge/Symfony-8-purple?logo=symfony)
+![PHP 8.5](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)
+![Doctrine ORM 3](https://img.shields.io/badge/Doctrine%20ORM-3-orange?logo=doctrine&logoColor=white)
 
 # Doctrine Slug Bundle
 
@@ -114,7 +116,7 @@ The bundle validates mappings at metadata load time:
 
 ```bash
 composer test       # Run PHPUnit test suite
-composer analyse    # Run PHPStan static analysis (level 6)
+composer analyse    # Run PHPStan static analysis (level max)
 composer cs-fix     # Fix code style with PHP-CS-Fixer
 composer cs-check   # Verify code style (dry-run)
 ```
