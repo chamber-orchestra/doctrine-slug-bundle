@@ -23,6 +23,9 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 
+/**
+ * @phpstan-import-type SlugMapping from SlugConfiguration
+ */
 #[AsDoctrineListener(event: Events::onFlush)]
 #[AsDoctrineListener(event: Events::postFlush)]
 class SlugSubscriber extends AbstractDoctrineListener
@@ -101,13 +104,13 @@ class SlugSubscriber extends AbstractDoctrineListener
     }
 
     /**
-     * @param array<string, mixed> $mapping
+     * @param SlugMapping $mapping
      */
     private function generate(EntityManagerInterface $em, object $entity, array $mapping): string
     {
         $meta = $em->getClassMetadata(ClassUtils::getClass($entity));
         $raw = $meta->getFieldValue($entity, $mapping['source']);
-        $value = \is_string($raw) ? $raw : (string)($raw instanceof \Stringable ? $raw : '');
+        $value = \is_string($raw) ? $raw : (string) ($raw instanceof \Stringable ? $raw : '');
         $slug = $this->generator->generate($value, $mapping['separator'], $mapping['length']);
         $slug = $this->makeUniqueSlug($em, $entity, $mapping, $slug);
 
@@ -115,7 +118,7 @@ class SlugSubscriber extends AbstractDoctrineListener
     }
 
     /**
-     * @param array<string, mixed> $mapping
+     * @param SlugMapping $mapping
      */
     private function makeUniqueSlug(EntityManagerInterface $em, object $entity, array $mapping, string $preferredSlug): string
     {
@@ -134,6 +137,7 @@ class SlugSubscriber extends AbstractDoctrineListener
         $persistedSlugs = $persisted[$fieldName] ?? [];
         $prefix = $preferredSlug;
         $persistedSlugs = \array_filter($persistedSlugs, static fn (string $s): bool => \str_starts_with($s, $prefix));
+        /** @var list<string> $slugs */
         $slugs = \array_merge($persistedSlugs, \array_column($result, 'slug'));
 
         if (!\count($slugs)) {
@@ -158,7 +162,7 @@ class SlugSubscriber extends AbstractDoctrineListener
 
             if (null !== $length) {
                 $len = \mb_strlen($preferredSlug);
-                $excess = \max(0, $len + \mb_strlen($suffix) - $length);
+                $excess = (int) \max(0, $len + \mb_strlen($suffix) - $length);
                 $slug = \mb_substr($preferredSlug, 0, $len - $excess) . $suffix;
             } else {
                 $slug = $preferredSlug . $suffix;

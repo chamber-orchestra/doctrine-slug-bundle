@@ -55,7 +55,7 @@ class SlugDriver extends AbstractMappingDriver
 
             if (null !== $sourceColumn) {
                 if (!\in_array($sourceColumn->type, ['string', 'text', 'ascii_string'], true)) {
-                    throw MappingException::invalidSourceType($className, $attr->source, $property->getName(), $sourceColumn->type);
+                    throw MappingException::invalidSourceType($className, $attr->source, $property->getName(), (string) $sourceColumn->type);
                 }
 
                 if ($sourceColumn->nullable && !$column->nullable) {

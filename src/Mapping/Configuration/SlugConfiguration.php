@@ -13,15 +13,22 @@ namespace ChamberOrchestra\DoctrineSlugBundle\Mapping\Configuration;
 
 use ChamberOrchestra\MetadataBundle\Mapping\ORM\AbstractMetadataConfiguration;
 
+/**
+ * @phpstan-type SlugMapping array{slug: true, source: string, update: bool, length: int|null, nullable: bool, separator: string, fieldName: string}
+ */
 class SlugConfiguration extends AbstractMetadataConfiguration
 {
     /**
-     * @return array<string, array<string, mixed>>
+     * @return array<string, SlugMapping>
      */
     public function getSluggableFields(): array
     {
-        return \array_filter($this->mappings, function (array $item): bool {
-            return isset($item['slug']) && $item['slug'];
-        });
+        /** @var array<string, SlugMapping> $result */
+        $result = \array_filter(
+            $this->mappings,
+            static fn (mixed $item): bool => \is_array($item) && !empty($item['slug']),
+        );
+
+        return $result;
     }
 }
