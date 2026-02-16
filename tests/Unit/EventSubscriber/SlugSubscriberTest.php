@@ -60,8 +60,8 @@ final class SlugSubscriberTest extends TestCase
 
         // Build 1001 existing slugs: a, a-1, a-2, ..., a-1000
         $existingSlugs = [['slug' => 'a']];
-        for ($i = 1; $i <= 1000; $i++) {
-            $existingSlugs[] = ['slug' => 'a-' . $i];
+        for ($i = 1; $i <= 1000; ++$i) {
+            $existingSlugs[] = ['slug' => 'a-'.$i];
         }
 
         $em = $this->createEntityManagerWithSlugs($existingSlugs);
@@ -159,4 +159,6 @@ final class SlugSubscriberTest extends TestCase
     }
 }
 
-final class SlugSubscriberEntity {}
+final class SlugSubscriberEntity
+{
+}

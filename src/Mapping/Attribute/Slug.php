@@ -11,10 +11,9 @@ declare(strict_types=1);
 
 namespace ChamberOrchestra\DoctrineSlugBundle\Mapping\Attribute;
 
-use Attribute;
 use Doctrine\ORM\Mapping\MappingAttribute;
 
-#[Attribute(Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 final class Slug implements MappingAttribute
 {
     public function __construct(
@@ -27,10 +26,7 @@ final class Slug implements MappingAttribute
         }
 
         if ('' === $this->separator || \mb_strlen($this->separator) > 1) {
-            throw new \InvalidArgumentException(\sprintf(
-                'The "separator" option of #[Slug] must be exactly one character, got "%s".',
-                $this->separator,
-            ));
+            throw new \InvalidArgumentException(\sprintf('The "separator" option of #[Slug] must be exactly one character, got "%s".', $this->separator));
         }
     }
 }

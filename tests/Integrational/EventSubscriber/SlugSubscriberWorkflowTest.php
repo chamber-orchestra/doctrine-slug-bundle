@@ -163,7 +163,7 @@ final class SlugSubscriberWorkflowTest extends KernelTestCase
     public function testMultipleBatchUniqueness(): void
     {
         $posts = [];
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; ++$i) {
             $post = new Post();
             $post->setName('Same Title');
             $this->em->persist($post);

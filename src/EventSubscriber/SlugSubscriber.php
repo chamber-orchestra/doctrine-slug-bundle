@@ -35,7 +35,8 @@ class SlugSubscriber extends AbstractDoctrineListener
 
     public function __construct(
         private readonly GeneratorInterface $generator,
-    ) {}
+    ) {
+    }
 
     public function onFlush(OnFlushEventArgs $args): void
     {
@@ -128,9 +129,9 @@ class SlugSubscriber extends AbstractDoctrineListener
         $er = $em->getRepository($class = ClassUtils::getClass($entity));
         $qb = $er->createQueryBuilder('n');
         $escapedSlug = \str_replace(['%', '_'], ['\\%', '\\_'], $preferredSlug);
-        $qb->select('n.' . $fieldName . ' as slug')
-            ->where($qb->expr()->like('n.' . $fieldName, ':prefix'))
-            ->setParameter('prefix', $escapedSlug . '%');
+        $qb->select('n.'.$fieldName.' as slug')
+            ->where($qb->expr()->like('n.'.$fieldName, ':prefix'))
+            ->setParameter('prefix', $escapedSlug.'%');
         $result = $qb->getQuery()->useQueryCache(false)->getArrayResult();
 
         $persisted = $this->persisted[$class] ?? [];
@@ -151,28 +152,24 @@ class SlugSubscriber extends AbstractDoctrineListener
         $slug = $preferredSlug;
         while (isset($slugMap[$slug])) {
             if ($i >= $maxIterations) {
-                throw new RuntimeException(\sprintf(
-                    'Could not generate a unique slug for "%s" after %d attempts.',
-                    $preferredSlug,
-                    $maxIterations,
-                ));
+                throw new RuntimeException(\sprintf('Could not generate a unique slug for "%s" after %d attempts.', $preferredSlug, $maxIterations));
             }
 
-            $suffix = $mapping['separator'] . ++$i;
+            $suffix = $mapping['separator'].++$i;
 
             if (null !== $length) {
                 $len = \mb_strlen($preferredSlug);
                 $excess = (int) \max(0, $len + \mb_strlen($suffix) - $length);
-                $slug = \mb_substr($preferredSlug, 0, $len - $excess) . $suffix;
+                $slug = \mb_substr($preferredSlug, 0, $len - $excess).$suffix;
             } else {
-                $slug = $preferredSlug . $suffix;
+                $slug = $preferredSlug.$suffix;
             }
         }
 
         return $slug;
     }
 
-    private function setFieldValue(EntityManagerInterface $em, object $entity, string $fieldName, string|null $slug): void
+    private function setFieldValue(EntityManagerInterface $em, object $entity, string $fieldName, ?string $slug): void
     {
         $meta = $em->getClassMetadata($class = ClassUtils::getClass($entity));
         $meta->setFieldValue($entity, $fieldName, $slug);

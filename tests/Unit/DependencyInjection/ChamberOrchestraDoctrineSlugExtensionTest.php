@@ -31,7 +31,7 @@ final class ChamberOrchestraDoctrineSlugExtensionTest extends TestCase
         self::assertTrue($container->hasAlias(GeneratorInterface::class));
         self::assertSame(
             StringGenerator::class,
-            (string)$container->getAlias(GeneratorInterface::class)
+            (string) $container->getAlias(GeneratorInterface::class)
         );
         self::assertTrue($container->hasDefinition(SlugSubscriber::class));
     }
