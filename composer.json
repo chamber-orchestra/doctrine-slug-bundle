@@ -30,8 +30,8 @@
   ],
   "require": {
     "php": "^8.5",
-    "chamber-orchestra/metadata-bundle": "8.0.*",
-    "symfony/string": "8.0.*",
+    "chamber-orchestra/metadata-bundle": "8.1.*",
+    "symfony/string": "8.1.*",
     "symfony/translation-contracts": "^3.0"
   },
   "require-dev": {
@@ -57,7 +57,7 @@
   "extra": {
     "symfony": {
       "allow-contrib": false,
-      "require": "8.0.*"
+      "require": "8.1.*"
     }
   },
   "config": {
