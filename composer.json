@@ -35,9 +35,9 @@
     "symfony/translation-contracts": "^3.0"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.64",
-    "phpstan/phpstan": "^2.0",
-    "phpunit/phpunit": "^13.0",
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "phpstan/phpstan": "^2.2",
+    "phpunit/phpunit": "^13.3",
     "symfony/test-pack": "^1.2"
   },
   "autoload": {
