@@ -24,7 +24,7 @@ A Symfony bundle that automatically generates unique, URL-friendly slugs for Doc
 ## Requirements
 
 - PHP 8.5+
-- Symfony 8.0+
+- Symfony 8.2+
 - Doctrine ORM 3.6+ / DoctrineBundle 3.2+
 - `chamber-orchestra/metadata-bundle` 8.0.*
 

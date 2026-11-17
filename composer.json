@@ -30,8 +30,8 @@
   ],
   "require": {
     "php": "^8.5",
-    "chamber-orchestra/metadata-bundle": "8.1.*",
-    "symfony/string": "8.1.*",
+    "chamber-orchestra/metadata-bundle": "8.2.*",
+    "symfony/string": "8.2.*",
     "symfony/translation-contracts": "^3.7"
   },
   "require-dev": {
@@ -50,14 +50,14 @@
       "Tests\\": "tests/"
     }
   },
-  "minimum-stability": "stable",
+  "minimum-stability": "beta",
   "conflict": {
     "symfony/symfony": "*"
   },
   "extra": {
     "symfony": {
       "allow-contrib": false,
-      "require": "8.1.*"
+      "require": "8.2.*"
     }
   },
   "config": {
@@ -70,5 +70,6 @@
     "analyse": "vendor/bin/phpstan analyse",
     "cs-fix": "vendor/bin/php-cs-fixer fix",
     "cs-check": "vendor/bin/php-cs-fixer fix --dry-run --diff"
-  }
+  },
+  "prefer-stable": true
 }
